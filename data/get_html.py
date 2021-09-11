@@ -35,7 +35,10 @@ def get_script_data(data_dir):
 
     script_link = script_links[0]
     name = script_link.split("/")[-1]
-    urlretrieve(script_link, os.path.join(data_dir, name))
+    try:
+      urlretrieve(script_link, os.path.join(data_dir, name))
+    except:
+      print(f"Link failed: {script_link}")
 
 
 if __name__ == "__main__":
