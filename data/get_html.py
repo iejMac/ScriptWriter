@@ -18,9 +18,12 @@ def get_script_data(data_dir):
       movie_links.append(r+l)
 
   movie_links = movie_links[5:] # first 5 are from little sidebar recommenation thing (will repeat)
+  movie_count = 0
+  error_count = 0
   scripts = []
 
   for movie_link in movie_links:
+    movie_count += 1
     req = Request(movie_link)
     html_page = urlopen(req)
     soup = BeautifulSoup(html_page, 'html.parser')
@@ -39,12 +42,11 @@ def get_script_data(data_dir):
       urlretrieve(script_link, os.path.join(data_dir, name))
     except:
       print(f"Link failed: {script_link}")
-
+      error_count += 1
+      print(f"{error_count}/{movie_count} links failed")
 
 if __name__ == "__main__":
   if len(sys.argv) > 1:
-    data_dir = sys.argv[1]
-    get_script_data(data_dir)
+    get_script_data(sys.argv[1])
   else:
     print("Usage: python get_html.py data_dir")
-
