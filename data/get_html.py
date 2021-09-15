@@ -39,7 +39,18 @@ def get_script_data(data_dir):
     script_link = script_links[0]
     name = script_link.split("/")[-1]
     try:
-      urlretrieve(script_link, os.path.join(data_dir, name))
+      # urlretrieve(script_link, os.path.join(data_dir, name))
+      req = Request(script_link)
+      html = urlopen(req)
+      soup = BeautifulSoup(html, "html.parser")
+      pre = str(soup.find("pre")) # seems like the pre flag almost always has the script
+      if len(pre) < 10000:
+        print(f"Link failed: {script_link}")
+        error_count += 1
+        print(f"{error_count}/{movie_count} links failed")
+      with open(os.path.join(data_dir, name), "w+") as f:
+        f.write(pre)
+        
     except:
       print(f"Link failed: {script_link}")
       error_count += 1
