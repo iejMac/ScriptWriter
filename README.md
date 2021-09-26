@@ -19,6 +19,7 @@ output: context + fragment or context + new word + shifted mask
 ## Idea:
 
 Contrastive model = value net
+
 Generative model = policy net
 
 Combine them with MCTS and generate many path's that the fragment could take
