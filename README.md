@@ -16,6 +16,10 @@ output: similarity score
 input: masked context (mask where fragment should start)
 output: context + fragment or context + new word + shifted mask
 
+Notes:
+- Can't really use fully pretrained transformers since diff vocab because of formatting
+- Use some pretrained layers from good transformers
+
 ## Idea:
 
 Contrastive model = value net
