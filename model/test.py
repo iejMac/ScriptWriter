@@ -1,7 +1,12 @@
 import model
 import torch
 
-test = model.Transformer(1, 1, 1)
+mod = model.Transformer(5, 2, 1)
+x = torch.randn((1, 2, 5))
+
+out = mod(x)
+print(out.shape)
+
 
 
 

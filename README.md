@@ -27,3 +27,8 @@ Contrastive model = value net
 Generative model = policy net
 
 Combine them with MCTS and generate many path's that the fragment could take
+
+
+## TODO:
+
+1. TOKENIZATION
