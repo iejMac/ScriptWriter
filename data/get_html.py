@@ -57,7 +57,7 @@ def get_script_data(data_dir):
       print(f"{error_count}/{movie_count} links failed")
 
 if __name__ == "__main__":
-  if len(sys.argv) > 1:
+  if 3 > len(sys.argv) > 1:
     get_script_data(sys.argv[1])
   else:
     print("Usage: python get_html.py data_dir")
