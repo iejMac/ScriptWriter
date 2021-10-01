@@ -3,7 +3,7 @@ Neural network that fills in blank spaces in movie scripts
 
 ## Data:
 1. Website -> HTML (Mostly done ✅, only about 5% loss)
-2. HTML -> unified format
+2. HTML -> unified format (Not unified but done ✅)
 3. unified format -> tokenized arrays 
 
 ## Models:
