@@ -32,3 +32,13 @@ Combine them with MCTS and generate many path's that the fragment could take
 ## TODO:
 
 1. TOKENIZATION
+
+
+
+## Useful papers for this project:
+
+1. CLIP: https://arxiv.org/pdf/2103.00020.pdf
+
+2. Transformers: https://arxiv.org/pdf/1706.03762.pdf
+
+3. LayerNorm: https://arxiv.org/pdf/1607.06450.pdf

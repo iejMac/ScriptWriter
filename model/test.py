@@ -7,6 +7,3 @@ x = torch.randn((1, 2, 5))
 out = mod(x)
 print(out.shape)
 
-
-
-
