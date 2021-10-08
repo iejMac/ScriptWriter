@@ -36,14 +36,14 @@ Combine them with MCTS and generate many path's that the fragment could take
 ## TODO:
 
 1. DATA TASKS:
-  a. Data extraction pipeline improve efficiency !
-  b. Data cleaning !!
+  * Data extraction pipeline improve efficiency !
+  * Data cleaning !!
 
 2. TOKENIZATION !!!
-  - How to tokenize data
-  - How to include whitespace
-  - In general figure out tokenization step
-  - Do we need new vocab or can we just use one
+  * How to tokenize data
+  * How to include whitespace
+  * In general figure out tokenization step
+  * Do we need new vocab or can we just use one
 
 ## Useful papers for this project:
 
