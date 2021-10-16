@@ -5,41 +5,48 @@ from tokenizers import BertWordPieceTokenizer
 from tokenizers.trainers import BpeTrainer
 from tokenizers import pre_tokenizers
 
-data_dir = "./out_dir"
-test_script_name = os.path.join(data_dir, os.listdir(data_dir)[0])
-# test_script_name = os.path.join(data_dir, os.listdir(data_dir)[1])
-print(test_script_name)
 
-with open(test_script_name, "r") as f:
-  test = f.read()
+class ScriptTokenizer:
+  def __init__(self,
+               vocab_file="bert-base-uncased-vocab.txt"):
 
-# data = [test[500:2000]]
-# data = [test[500:200000]]
-data = [test, test, test, test, test, test, test, test, test, test]
-# data = data[0]
-# data = data.replace("    ", "\t") # 4 space tabs
-# data = data.replace("  ", "\t") # 4 space tabs
-data = data[0].replace("\t", "|<TAB>|")
-data = data[0].replace("\n", "|<NL>|")
-# print(repr(data))
 
-'''
-tokenizer = Tokenizer(BPE())
-trainer = BpeTrainer(vocab_size=1000, special_tokens=["|<TAB>|", "|<NL>|"], initial_alphabet=pre_tokenizers.ByteLevel.alphabet())
+    self.tokenizer = BertWordPieceTokenizer(vocab_file, lowercase=True)
+    self.tokenizer.add_special_tokens(["|<TAB>|", "|<NL>|"])
 
-tokenizer.train_from_iterator(data, trainer=trainer)
-'''
+  def encode(self, text):
+    '''
+      Encodes raw text into indices for data
 
-tokenizer = BertWordPieceTokenizer("bert-base-uncased-vocab.txt", lowercase=True)
-tokenizer.add_special_tokens(["|<TAB>|", "|<NL>|"])
+      Maybe some options for Karan and Pau:
+      data = data.replace("    ", "\t") # 4 space tabs
+      data = data.replace("  ", "\t") # 4 space tabs
+    '''
+    text = text.replace("\t", "|<TAB>|") # Tab structure gives a lot of information
+    text = text.replace("\n\n", "|<NL>|") # Prounounced breaks in script structure
 
-to_encode = test[500:1000]
-to_encode = to_encode.replace("\t", "|<TAB>|")
-print(to_encode)
+    tokenized = self.tokenizer.encode(text)
+    return tokenized.ids
 
-# test = tokenizer.encode("|<TAB>||<NL>| cringe what when why, the")
-test = tokenizer.encode(to_encode)
-print(test.tokens)
+
+
+if __name__ == "__main__":
+  data_dir = "./out_dir"
+  test_script_name = os.path.join(data_dir, os.listdir(data_dir)[0])
+  # test_script_name = os.path.join(data_dir, os.listdir(data_dir)[1])
+  print(test_script_name)
+
+  with open(test_script_name, "r") as f:
+    test = f.read()
+
+  test = test[500:1000]
+
+  tok = ScriptTokenizer()
+
+  print(tok.encode(test))
+
+
+  
 
 
 
