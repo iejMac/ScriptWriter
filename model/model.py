@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 
+
 class AttentionBlock(nn.Module):
   def __init__(self, dim: int, n_heads: int, mask: torch.Tensor = None):
     super().__init__()
