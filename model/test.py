@@ -25,18 +25,14 @@ tok = ScriptTokenizer("../data/bert-base-uncased-vocab.txt")
 test = test[500:2000]
 test = test.replace("    ", "\t")
 
-encoded = tok.encode(test)
+texts = [test, test]
 
+encoded = tok.encode(texts)
 
-TRANSFORMER_WIDTH = 512
-emb = torch.nn.Embedding(tok.tokenizer.get_vocab_size(), TRANSFORMER_WIDTH)
+mod = model.CSFP(100, tok.get_vocab_size(), 512, 2, 4)
 
-print(len(encoded))
+out = mod.temp_encode(encoded)
 
-embedded = emb(encoded)
-print(embedded[0])
-
-print(embedded.shape)
 
 
 
