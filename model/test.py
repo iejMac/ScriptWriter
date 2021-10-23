@@ -33,6 +33,8 @@ mod = model.CSFP(100, tok.get_vocab_size(), 512, 2, 4)
 
 out = mod.temp_encode(encoded)
 
+print(out.shape)
+
 
 
 

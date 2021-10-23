@@ -40,6 +40,7 @@ class CSFP(nn.Module):
   def __init__(self,
                embed_dim: int,
                vocab_size: int,
+               context_len: int,
                transformer_width: int,
                transformer_heads: int,
                transformer_layers: int
@@ -86,8 +87,9 @@ class CSFP(nn.Module):
       nn.Linear(4 * embed_dim, embed_dim)
     ])
     '''
-    self.embed_dim = embed_dim
+    self.context_len = context_len
 
+    # TODO: figure out attention mask
     attn_mask = None
     self.transformer = Transformer(transformer_width, transformer_heads, transformer_layers, attn_mask)
 
@@ -95,6 +97,11 @@ class CSFP(nn.Module):
 
     # TODO: figure out where to use this (+more) LayerNorm in encode func
     self.layer_norm_final = nn.LayerNorm(transformer_width)
+
+    self.logit_scale = nn.Parameter(torch.ones([]) * np.log(1/0.07))
+    self.text_proj = nn.Parameter(torch.empty(transformer_width, embed_dim))
+    self.positional_embedding = nn.Parameter(torch.empty(context_len, transformer_width))
+
 
   def encode(self, pre_fragment, post_fragment, fragment):
     '''
