@@ -25,15 +25,17 @@ tok = ScriptTokenizer("../data/bert-base-uncased-vocab.txt")
 test = test[500:2000]
 test = test.replace("    ", "\t")
 
-texts = [test, test]
+# texts = [test, test]
+texts = [test, test[600:800]]
 
 encoded = tok.encode(texts)
 
-mod = model.CSFP(100, tok.get_vocab_size(), 512, 2, 4)
+mod = model.CSFP(784, tok.get_vocab_size(), 100, 512, 2, 4)
 
-out = mod.temp_encode(encoded)
+lpc, lpf = mod(encoded, encoded, encoded)
 
-print(out.shape)
+print(lpc)
+print(lpf)
 
 
 
