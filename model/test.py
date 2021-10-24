@@ -49,6 +49,8 @@ for e in range(EPOCHS):
 
 	loss = (loss_context(lpc, ground_truth) + loss_fragment(lpf, ground_truth))/2
 	print(loss)
+	loss.backward()
+	opt.step()
 
 
 
