@@ -16,33 +16,24 @@ from tokenizer import ScriptTokenizer
 
 '''
 
-data_dir = "../data/out_dir"
-test_script_name = os.path.join(data_dir, os.listdir(data_dir)[0])
+data_dir = "../data/data_dir"
 
-with open(test_script_name, "r") as f:
-	test = f.read()
+VOCAB_SIZE = 30526
+BATCH_SIZE = 500
+EPOCHS = 20
+SEQ_LEN = 50
 
-
-PRE_LEN = 10
-FRAG_LEN = 10
-POST_LEN = 10
-
-BATCH_SIZE = 10
-EPOCHS = 50
-
-tok = ScriptTokenizer("../data/bert-base-uncased-vocab.txt", pre_length=PRE_LEN, frag_length=FRAG_LEN, post_length=POST_LEN)
-
-test = test.replace("    ", "\t")
-texts = [test] * BATCH_SIZE
-
-mod = model.CSFP(800, tok.get_vocab_size(), 10, 500, 10, 10)
+mod = model.CSFP(800, VOCAB_SIZE, SEQ_LEN, 500, 10, 10)
 opt = optim.Adam(mod.parameters(), lr=3e-4,betas=(0.9,0.98),eps=1e-6,weight_decay=0.0)
 loss_context = torch.nn.CrossEntropyLoss()
 loss_fragment = torch.nn.CrossEntropyLoss()
 
+encoded_pres = torch.load(os.path.join(data_dir, "pres", "pre1.pt"))
+encoded_frags = torch.load(os.path.join(data_dir, "frags", "frag1.pt"))
+encoded_posts = torch.load(os.path.join(data_dir, "posts", "post1.pt"))
+
 for e in range(EPOCHS):
 	opt.zero_grad()
-	encoded_pres, encoded_frags, encoded_posts = tok.encode(texts, None)
 
 	lpc, lpf = mod(encoded_pres, encoded_frags, encoded_posts)
 	ground_truth = torch.arange(BATCH_SIZE)

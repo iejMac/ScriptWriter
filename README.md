@@ -4,15 +4,10 @@ Neural network that fills in blank spaces in movie scripts
 
 ## Data:
 
-### Extraction:
-
-1. Website -> HTML ✅ (only about 5% loss)
-2. HTML -> script in txt format ✅ (also some % of loss)
-
 ## Pre-processing:
 
-1. txt format -> clean txt format (removing useless tabs, repeated \n etc. as little format noise as possible)
-2. clean txt format -> tokenized arrays (BPE tokenization but somehow we cant skip \n and \t format is important)
+1. txt format -> clean txt format (removing useless tabs, repeated \n etc. as little format noise as possible) !!!
+2. Dividing scripts into tokenized torch arrays randomly (needs to be more way efficient) !!!
 
 ## Models:
 
