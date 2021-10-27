@@ -2,7 +2,11 @@ import os
 import sys
 import torch
 
+import numpy as np
+
 from tokenizer import ScriptTokenizer
+
+# TODO: need to investigate partitioning only on \n\n, meaning only different script parts
 
 def get_next_data_num(data_dir):
   nums = [int(name[4:-3]) for name in os.listdir(os.path.join(data_dir, "frags"))]
@@ -24,22 +28,25 @@ def generate_dataset(text_dir, data_dir, samples_per_script, fragment_length):
 
   script_names = os.listdir(text_dir)
 
-  pre_dat = torch.zeros(len(script_names), samples_per_script, fragment_length).type(torch.int)
-  frag_dat = torch.zeros(len(script_names), samples_per_script, fragment_length).type(torch.int)
-  post_dat = torch.zeros(len(script_names), samples_per_script, fragment_length).type(torch.int)
+  pre_dat = torch.zeros(len(script_names) * samples_per_script, fragment_length).type(torch.int)
+  frag_dat = torch.zeros(len(script_names) * samples_per_script, fragment_length).type(torch.int)
+  post_dat = torch.zeros(len(script_names) * samples_per_script, fragment_length).type(torch.int)
 
   for i, script_name in enumerate(script_names):
     with open(os.path.join(text_dir, script_name), "r") as f:
-      script = [f.read()] * samples_per_script
+      script = f.read()
 
-    encoded_pres, encoded_frags, encoded_posts = tok.encode(script, None) # encode with random location sampling
-    pre_dat[i] = encoded_pres
-    frag_dat[i] = encoded_frags
-    post_dat[i] = encoded_posts
-  
-  pre_dat = pre_dat.reshape(-1, fragment_length)
-  frag_dat = frag_dat.reshape(-1, fragment_length)
-  post_dat = post_dat.reshape(-1, fragment_length)
+    for j in range(samples_per_script):
+      encoded_pres, encoded_frags, encoded_posts = tok.encode(script, None) # encode with random location sampling
+      pre_dat[i * samples_per_script + j] = encoded_pres
+      frag_dat[i * samples_per_script + j] = encoded_frags
+      post_dat[i * samples_per_script + j] = encoded_posts
+
+  # Permute data:
+  p = torch.randperm(len(pre_dat))
+  pre_dat = pre_dat[p]
+  frag_dat = frag_dat[p]
+  post_dat = post_dat[p]
 
   new_id = get_next_data_num(data_dir)
   torch.save(pre_dat, os.path.join(data_dir, "pres", "pre" + str(new_id) + ".pt"))
