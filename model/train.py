@@ -54,7 +54,7 @@ if __name__ == "__main__":
         opt.zero_grad()
 
         lpc, lpf = mod(b_pre, b_frag, b_post)
-        ground_truth = torch.arange(BATCH_SIZE).to(device)
+        ground_truth = torch.arange(len(b_pre)).to(device) # len(b_pre) because last batch could be smaller
 
         loss = (loss_context(lpc, ground_truth) + loss_fragment(lpf, ground_truth))/2
         print(loss)
