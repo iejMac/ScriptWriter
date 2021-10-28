@@ -89,6 +89,9 @@ class CSFP(nn.Module):
     self.positional_embedding = nn.Parameter(torch.empty(context_len, transformer_width))
     nn.init.normal_(self.positional_embedding, std=0.01)
 
+    if torch.cuda.is_available():
+      self.to("cuda")
+
   def encode_text(self, text_tokens, transformer, layer_norm):
     '''
       Running the assumption that embedding and text projection should be the same for all transformers
