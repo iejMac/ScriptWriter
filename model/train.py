@@ -9,6 +9,7 @@ from torch import optim
 from tokenizer import ScriptTokenizer
 
 import model
+from logger import Logger
 
 '''
 	ASSUMPTIONS:
@@ -27,6 +28,13 @@ if __name__ == "__main__":
 
   data_dir = sys.argv[1]
   data_chunks = len(os.listdir(os.path.join(data_dir, "frags")))
+  logger = Logger("train_loss", "test_loss")
+
+  #TODO: make better testing
+  '''
+  test_chunk = data_chunks - 1
+  data_chunks -= 1
+  '''
 
   VOCAB_SIZE = 30526
   BATCH_SIZE = 10
@@ -57,6 +65,6 @@ if __name__ == "__main__":
         ground_truth = torch.arange(len(b_pre)).to(device) # len(b_pre) because last batch could be smaller
 
         loss = (loss_context(lpc, ground_truth) + loss_fragment(lpf, ground_truth))/2
-        print(loss)
+        logger.log(loss.item(), "train_loss")
         loss.backward()
         opt.step()

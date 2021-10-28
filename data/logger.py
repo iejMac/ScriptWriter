@@ -4,9 +4,9 @@ import pickle
 LOG_DIR = "logs"
 
 class Logger:
-  def __init__(self, metrics):
+  def __init__(self, *metrics_):
     self.metrics = dict()
-    for metric in metrics:
+    for metric in metrics_:
       self.metrics[metric] = []
     if not os.path.exists(LOG_DIR):
       os.mkdir(LOG_DIR)
