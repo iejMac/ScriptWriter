@@ -2,6 +2,8 @@ import torch
 import numpy as np
 from torch import nn
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 class ResAttentionBlock(nn.Module):
   def __init__(self, dim: int, n_heads: int, attention_mask: torch.Tensor = None):
     super().__init__()
@@ -89,8 +91,7 @@ class CSFP(nn.Module):
     self.positional_embedding = nn.Parameter(torch.empty(context_len, transformer_width))
     nn.init.normal_(self.positional_embedding, std=0.01)
 
-    if torch.cuda.is_available():
-      self.to("cuda")
+    self.to(device)
 
   def encode_text(self, text_tokens, transformer, layer_norm):
     '''

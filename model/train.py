@@ -18,6 +18,8 @@ import model
 
 '''
 
+device = "cuda" if torch.cuda.is_available() else "cpu"
+
 if __name__ == "__main__":
   # TODO: also make this nice with argparse
   if len(sys.argv) != 2:
@@ -38,9 +40,9 @@ if __name__ == "__main__":
 
   for e in range(EPOCHS):
     for chunk in range(data_chunks):
-      encoded_pres = torch.load(os.path.join(data_dir, "pres", f"pre{chunk}.pt"))
-      encoded_frags = torch.load(os.path.join(data_dir, "frags", f"frag{chunk}.pt"))
-      encoded_posts = torch.load(os.path.join(data_dir, "posts", f"post{chunk}.pt"))
+      encoded_pres = torch.load(os.path.join(data_dir, "pres", f"pre{chunk}.pt")).to(device)
+      encoded_frags = torch.load(os.path.join(data_dir, "frags", f"frag{chunk}.pt")).to(device)
+      encoded_posts = torch.load(os.path.join(data_dir, "posts", f"post{chunk}.pt")).to(device)
 
       batch_count = math.ceil(len(encoded_pres) / BATCH_SIZE)
 
