@@ -93,6 +93,9 @@ class CSFP(nn.Module):
 
     self.to(device)
 
+  def get_parameter_count(self):
+    return sum(p.numel() for p in self.parameters())
+
   def encode_text(self, text_tokens, transformer, layer_norm):
     '''
       Running the assumption that embedding and text projection should be the same for all transformers
